@@ -65,7 +65,10 @@ function awardXp(guildId, userId, xpAmount, isVoice = false) {
   const newVoiceMinutes = isVoice ? row.voice_minutes + xpAmount / config.xp.voiceXpPerMinute : row.voice_minutes;
   const lastXpTime = isVoice ? row.last_xp_time : now;
 
-  saveUserXp(guildId, userId, newXp, newLevel, newMessages, Math.floor(newVoiceMinutes), lastXpTime);
+  // Save oldLevel intentionally — checkLevelUp() detects the mismatch and handles
+  // the announcement + role rewards. If we saved newLevel here, checkLevelUp would
+  // see level == correctLevel and return early, so no message would ever fire.
+  saveUserXp(guildId, userId, newXp, oldLevel, newMessages, Math.floor(newVoiceMinutes), lastXpTime);
 
   return {
     leveledUp: newLevel > oldLevel,

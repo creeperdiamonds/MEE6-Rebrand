@@ -19,9 +19,7 @@ const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
 
-// ──────────────────────────────────────────────
 // Schema creation
-// ──────────────────────────────────────────────
 db.exec(`
   CREATE TABLE IF NOT EXISTS guilds (
     guild_id       TEXT PRIMARY KEY,
@@ -99,18 +97,13 @@ db.exec(`
 
 logger.success('Database initialized at ' + dbPath);
 
-// ──────────────────────────────────────────────
 // Prepared statements
-// ──────────────────────────────────────────────
 const stmts = {
   // Guilds
   insertGuild: db.prepare(
     `INSERT OR IGNORE INTO guilds (guild_id) VALUES (?)`
   ),
   getGuild: db.prepare(`SELECT * FROM guilds WHERE guild_id = ?`),
-  updateGuild: db.prepare(
-    `UPDATE guilds SET {col} = ? WHERE guild_id = ?`
-  ),
 
   // User XP
   getXp: db.prepare(
@@ -200,9 +193,7 @@ const stmts = {
   ),
 };
 
-// ──────────────────────────────────────────────
 // Helper functions
-// ──────────────────────────────────────────────
 
 /**
  * Ensure a guild row exists. Call at the start of any command that reads guild settings.

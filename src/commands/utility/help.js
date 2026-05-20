@@ -17,6 +17,7 @@ const CATEGORIES = [
       { name: '/warn', desc: 'Warn a user and store it in the database' },
       { name: '/warnings', desc: 'View all warnings for a user' },
       { name: '/clearwarnings', desc: 'Clear all warnings for a user' },
+      { name: '/tempban', desc: 'Temporarily ban a user (auto-unbanned on expiry)' },
       { name: '/purge', desc: 'Bulk delete messages (1–100)' },
       { name: '/slowmode', desc: 'Set channel slowmode (0 = off)' },
     ],

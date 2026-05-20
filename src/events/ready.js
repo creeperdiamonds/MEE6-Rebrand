@@ -23,9 +23,11 @@ module.exports = {
     // Start background jobs
     const { startNotificationJob } = require('../jobs/notifications');
     const { startTempActionsJob } = require('../jobs/tempActions');
+    const { startVoiceXpJob } = require('../jobs/voiceXp');
 
     startNotificationJob(client);
     startTempActionsJob(client);
+    startVoiceXpJob(client);
 
     logger.success('Bot is fully ready!');
   },

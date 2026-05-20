@@ -10,6 +10,14 @@ const logger = require('../utils/logger');
 // Spam tracking: Map<`${guildId}:${userId}:${channelId}`, number[]>  — stores timestamps
 const spamMap = new Map();
 
+// Purge stale spam entries every 10 minutes to prevent memory leaks
+setInterval(() => {
+  const cutoff = Date.now() - 30000;
+  for (const [key, times] of spamMap.entries()) {
+    if (times.every(t => t < cutoff)) spamMap.delete(key);
+  }
+}, 600000);
+
 // URL regex
 const URL_REGEX = /https?:\/\/[^\s]+|discord\.gg\/[^\s]+|discord\.com\/invite\/[^\s]+/gi;
 
