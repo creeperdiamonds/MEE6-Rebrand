@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — MEE6 Rebrand</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="navbar scrolled">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <div class="logo-icon">M6</div>
+        <span class="logo-text">MEE6 Rebrand</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html#features">Features</a></li>
+        <li><a href="../index.html#commands">Commands</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=8&scope=bot%20applications.commands" class="btn btn-primary" target="_blank" rel="noopener">Add to Discord</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="legal-page">
+    <div class="container">
+      <div class="legal-content">
+        <h1>Privacy Policy</h1>
+        <p class="legal-meta">Last updated: May 20, 2026</p>
+
+        <p>This Privacy Policy explains how MEE6 Rebrand ("the Bot", "we", "us", "our") collects, uses, and protects information when you use our Discord bot. We are committed to protecting your privacy and being transparent about our data practices.</p>
+
+        <h2>1. Information We Collect</h2>
+        <p>MEE6 Rebrand only collects the minimum data necessary to provide its features. We collect:</p>
+
+        <h3 style="font-size:17px;font-weight:700;margin:24px 0 8px;">1.1 Server Configuration Data</h3>
+        <ul>
+          <li>Discord Guild (server) ID</li>
+          <li>Channel IDs for welcome, goodbye, mod-log, and level-up messages</li>
+          <li>Bot prefix setting</li>
+          <li>Welcome and goodbye message templates</li>
+          <li>Auto-role ID</li>
+          <li>Auto-moderation settings (enabled/disabled, word filter list)</li>
+          <li>Level role assignments (level → role ID mappings)</li>
+        </ul>
+
+        <h3 style="font-size:17px;font-weight:700;margin:24px 0 8px;">1.2 User Activity Data</h3>
+        <ul>
+          <li>Discord User ID (pseudonymous — not your username or email)</li>
+          <li>XP amount, level, total message count, and voice channel minutes per server</li>
+          <li>Timestamp of last XP gain (for cooldown enforcement only)</li>
+        </ul>
+
+        <h3 style="font-size:17px;font-weight:700;margin:24px 0 8px;">1.3 Moderation Records</h3>
+        <ul>
+          <li>Warning records: user ID, moderator ID, reason, and timestamp</li>
+          <li>Temporary action records: user ID, action type, expiry time, moderator ID, reason</li>
+        </ul>
+
+        <h3 style="font-size:17px;font-weight:700;margin:24px 0 8px;">1.4 Custom Commands</h3>
+        <ul>
+          <li>Command trigger text and response text created by server administrators</li>
+          <li>Creator's user ID and creation timestamp</li>
+        </ul>
+
+        <h3 style="font-size:17px;font-weight:700;margin:24px 0 8px;">1.5 Notification Subscriptions</h3>
+        <ul>
+          <li>Twitch username(s), YouTube channel ID(s), and subreddit name(s) configured per server</li>
+          <li>Target Discord channel ID for each notification</li>
+          <li>Last seen content ID (to prevent duplicate notifications)</li>
+        </ul>
+
+        <h2>2. Information We Do NOT Collect</h2>
+        <ul>
+          <li>We do not collect your Discord username, email address, or IP address</li>
+          <li>We do not read, log, or store the content of your messages (except to detect custom command triggers and auto-mod violations in real time — this processing is immediate and not persisted)</li>
+          <li>We do not collect payment information of any kind</li>
+          <li>We do not collect data from direct messages (DMs)</li>
+          <li>We do not sell, rent, or share your data with any third party for commercial purposes</li>
+        </ul>
+
+        <h2>3. How We Use Your Information</h2>
+        <p>The information we collect is used exclusively to:</p>
+        <ul>
+          <li>Deliver the Bot's features (leveling, moderation, welcome messages, etc.)</li>
+          <li>Remember server-specific configuration between sessions</li>
+          <li>Enforce auto-moderation rules you have configured</li>
+          <li>Send notifications when configured Twitch/YouTube/Reddit sources are updated</li>
+          <li>Calculate and display XP rankings on the leaderboard</li>
+        </ul>
+
+        <h2>4. Data Storage and Security</h2>
+        <p>All data is stored in a local SQLite database on the server where MEE6 Rebrand is hosted. We implement reasonable technical measures to protect stored data, including:</p>
+        <ul>
+          <li>No exposure of the database over public networks</li>
+          <li>Principle of least privilege for data access within the bot</li>
+          <li>No storage of credentials or tokens belonging to users</li>
+        </ul>
+        <p>However, no method of storage or transmission is 100% secure. We cannot guarantee absolute security of your data.</p>
+
+        <h2>5. Data Retention</h2>
+        <ul>
+          <li><strong>Server data:</strong> Retained as long as the Bot is in your server. Deleted within 30 days of the Bot being removed.</li>
+          <li><strong>User XP data:</strong> Retained per server. Server admins can reset individual users' data with <code>/resetxp</code>. All user data for a server is deleted when the server data is deleted.</li>
+          <li><strong>Warning records:</strong> Retained per server. Admins can clear them with <code>/clearwarnings</code>.</li>
+          <li><strong>Expired temp-action records:</strong> Deleted automatically once the action has expired.</li>
+        </ul>
+
+        <h2>6. Your Rights</h2>
+        <p>Depending on your jurisdiction, you may have the right to:</p>
+        <ul>
+          <li><strong>Access:</strong> Request to know what data we hold about your user ID in a given server</li>
+          <li><strong>Deletion:</strong> Request deletion of your data. Server admins can delete your XP data and warnings. You may also request full deletion by contacting us directly.</li>
+          <li><strong>Correction:</strong> Server admins can correct XP data using <code>/givexp</code>, <code>/removexp</code>, or <code>/setlevel</code></li>
+        </ul>
+        <p>To exercise these rights, please contact us via our support Discord server.</p>
+
+        <h2>7. Children's Privacy</h2>
+        <p>MEE6 Rebrand is not directed at children under 13 years of age. In accordance with Discord's own Terms of Service, users must be at least 13 years old. We do not knowingly collect data from children under 13. If you believe we have inadvertently collected such data, please contact us immediately.</p>
+
+        <h2>8. Third-Party Links and Services</h2>
+        <p>The notification feature integrates with Twitch, YouTube, and Reddit APIs to check for new content. These services have their own privacy policies, which govern how they handle data. MEE6 Rebrand only uses public API endpoints and does not authenticate on behalf of users for these services.</p>
+
+        <h2>9. Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. The "Last updated" date at the top of this page reflects the most recent revision. We encourage you to review this policy periodically. Continued use of the Bot after changes constitutes your acceptance of the updated policy.</p>
+
+        <h2>10. Contact</h2>
+        <p>If you have any questions, concerns, or requests regarding this Privacy Policy or your data, please contact us via our support Discord server or the contact information listed on our Discord Developer Portal application page.</p>
+        <p><a href="terms.html">View our Terms of Service →</a></p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 MEE6 Rebrand. Not affiliated with MEE6 or its creators. Open source &amp; free forever.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
