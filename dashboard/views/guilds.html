@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Servers — MEE6 Rebrand Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/dashboard.css"/>
+</head>
+<body>
+  <nav class="dash-nav">
+    <a href="/dashboard" class="nav-logo"><div class="logo-icon">M6</div><span>MEE6 Rebrand</span></a>
+    <div class="nav-user" id="navUser">
+      <img class="user-avatar" id="userAvatar" src="" alt=""/>
+      <span id="userName">...</span>
+      <a href="/auth/logout" class="btn-logout">Logout</a>
+    </div>
+  </nav>
+
+  <main class="guilds-page">
+    <div class="guilds-header">
+      <h1>Select a Server</h1>
+      <p>Servers where you have <strong>Manage Server</strong> permission and the bot is present.</p>
+    </div>
+    <div class="guilds-grid" id="guildsGrid">
+      <div class="guild-loading">Loading servers...</div>
+    </div>
+  </main>
+
+  <script>
+    async function load() {
+      const [meResp, guildsResp] = await Promise.all([
+        fetch('/api/me'),
+        fetch('/api/guilds'),
+      ]);
+
+      if (meResp.ok) {
+        const me = await meResp.json();
+        document.getElementById('userAvatar').src = me.avatar;
+        document.getElementById('userName').textContent = me.username;
+      }
+
+      const grid = document.getElementById('guildsGrid');
+
+      if (!guildsResp.ok) {
+        grid.innerHTML = '<div class="guild-error">Failed to load servers. Please <a href="/auth/logout">log in again</a>.</div>';
+        return;
+      }
+
+      const guilds = await guildsResp.json();
+
+      if (guilds.length === 0) {
+        grid.innerHTML = `<div class="guild-empty">
+          <div style="font-size:48px">🤖</div>
+          <h3>No servers found</h3>
+          <p>The bot needs to be in a server where you have Manage Server permission.</p>
+          <a href="https://discord.com/oauth2/authorize?client_id=${encodeURIComponent('YOUR_CLIENT_ID')}&permissions=8&scope=bot%20applications.commands" target="_blank" class="btn-invite">Invite the bot</a>
+        </div>`;
+        return;
+      }
+
+      grid.innerHTML = guilds.map(g => `
+        <a class="guild-card" href="/dashboard/${g.id}">
+          ${g.icon
+            ? `<img class="guild-icon" src="${g.icon}" alt="${g.name}"/>`
+            : `<div class="guild-icon-placeholder">${g.name.charAt(0)}</div>`
+          }
+          <div class="guild-name">${escHtml(g.name)}</div>
+          <div class="guild-action">Manage →</div>
+        </a>
+      `).join('');
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    load();
+  </script>
+</body>
+</html>

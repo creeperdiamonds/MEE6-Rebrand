@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Server Settings — MEE6 Rebrand Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/dashboard.css"/>
+</head>
+<body class="guild-page-body">
+
+  <nav class="dash-nav">
+    <a href="/dashboard" class="nav-logo"><div class="logo-icon">M6</div><span>MEE6 Rebrand</span></a>
+    <div class="nav-user" id="navUser">
+      <img class="user-avatar" id="userAvatar" src="" alt=""/>
+      <span id="userName">...</span>
+      <a href="/auth/logout" class="btn-logout">Logout</a>
+    </div>
+  </nav>
+
+  <div class="guild-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="guild-info" id="guildInfo">
+        <div class="guild-icon-placeholder" id="guildIconWrap">...</div>
+        <div class="sidebar-guild-name" id="sidebarGuildName">Loading...</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="sidebar-link active" data-section="general" href="#">⚙️ General</a>
+        <a class="sidebar-link" data-section="welcome" href="#">👋 Welcome</a>
+        <a class="sidebar-link" data-section="goodbye" href="#">🚪 Goodbye</a>
+        <a class="sidebar-link" data-section="autorole" href="#">🎭 Auto-Role</a>
+        <a class="sidebar-link" data-section="leveling" href="#">⭐ Level Roles</a>
+        <a class="sidebar-link" data-section="automod" href="#">🛡️ Auto-Mod</a>
+        <a class="sidebar-link" data-section="commands" href="#">⚡ Custom Commands</a>
+        <a class="sidebar-link" data-section="notifications" href="#">🔔 Notifications</a>
+      </nav>
+      <a href="/dashboard" class="btn-back">← Back to servers</a>
+    </aside>
+
+    <!-- Main content -->
+    <main class="dash-content">
+      <div id="toast" class="toast hidden"></div>
+      <div id="loadingState" class="loading-state">Loading server data...</div>
+      <div id="sections" class="hidden">
+
+        <!-- GENERAL -->
+        <section id="section-general" class="dash-section active">
+          <h2>General Settings</h2>
+          <div class="form-group">
+            <label>Command Prefix <span class="hint">Used for custom text commands (e.g. !rules)</span></label>
+            <input type="text" id="prefix" maxlength="5" placeholder="!" class="dash-input" style="max-width:120px"/>
+          </div>
+          <div class="form-group">
+            <label>Mod-Log Channel <span class="hint">All moderation actions are logged here</span></label>
+            <select id="log_channel" class="dash-select">
+              <option value="">— Disabled —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Level-Up Channel <span class="hint">Where level-up announcements are sent (blank = same channel)</span></label>
+            <select id="levelup_channel" class="dash-select">
+              <option value="">— Same channel as message —</option>
+            </select>
+          </div>
+          <button class="btn-save" onclick="saveGeneral()">Save Changes</button>
+        </section>
+
+        <!-- WELCOME -->
+        <section id="section-welcome" class="dash-section">
+          <h2>Welcome Message</h2>
+          <p class="section-desc">Sent in the chosen channel when a new member joins. Supports <code>{user}</code> <code>{username}</code> <code>{server}</code> <code>{membercount}</code>.</p>
+          <div class="form-group">
+            <label>Channel</label>
+            <select id="welcome_channel" class="dash-select">
+              <option value="">— Disabled —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea id="welcome_message" class="dash-textarea" rows="4" placeholder="Welcome {user} to {server}! You are member #{membercount}."></textarea>
+          </div>
+          <button class="btn-save" onclick="saveWelcome()">Save Changes</button>
+        </section>
+
+        <!-- GOODBYE -->
+        <section id="section-goodbye" class="dash-section">
+          <h2>Goodbye Message</h2>
+          <p class="section-desc">Sent when a member leaves. Supports <code>{user}</code> <code>{username}</code> <code>{server}</code> <code>{membercount}</code>.</p>
+          <div class="form-group">
+            <label>Channel</label>
+            <select id="goodbye_channel" class="dash-select">
+              <option value="">— Disabled —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea id="goodbye_message" class="dash-textarea" rows="4" placeholder="Goodbye {username}, we'll miss you!"></textarea>
+          </div>
+          <button class="btn-save" onclick="saveGoodbye()">Save Changes</button>
+        </section>
+
+        <!-- AUTO-ROLE -->
+        <section id="section-autorole" class="dash-section">
+          <h2>Auto-Role</h2>
+          <p class="section-desc">Automatically assign a role to every new member who joins.</p>
+          <div class="form-group">
+            <label>Role to assign</label>
+            <select id="auto_role" class="dash-select">
+              <option value="">— Disabled —</option>
+            </select>
+          </div>
+          <button class="btn-save" onclick="saveAutorole()">Save Changes</button>
+        </section>
+
+        <!-- LEVELING -->
+        <section id="section-leveling" class="dash-section">
+          <h2>Level Roles</h2>
+          <p class="section-desc">Automatically assign a role when a member reaches a specified level.</p>
+          <div class="card-list" id="levelRolesList"></div>
+          <div class="add-form">
+            <h3>Add Level Role</h3>
+            <div class="add-form-row">
+              <div class="form-group" style="flex:0 0 120px">
+                <label>Level</label>
+                <input type="number" id="lr_level" min="1" max="1000" placeholder="e.g. 10" class="dash-input"/>
+              </div>
+              <div class="form-group" style="flex:1">
+                <label>Role</label>
+                <select id="lr_role" class="dash-select"></select>
+              </div>
+            </div>
+            <button class="btn-save" onclick="addLevelRole()">Add Role Reward</button>
+          </div>
+        </section>
+
+        <!-- AUTO-MOD -->
+        <section id="section-automod" class="dash-section">
+          <h2>Auto-Moderation</h2>
+          <div class="toggle-group">
+            <label class="toggle-label">
+              <span>Enable Auto-Mod</span>
+              <label class="toggle"><input type="checkbox" id="automod_enabled" onchange="saveAutomod()"/><span class="slider"></span></label>
+            </label>
+            <label class="toggle-label">
+              <span>Spam Filter</span>
+              <label class="toggle"><input type="checkbox" id="spam_filter" onchange="saveAutomod()"/><span class="slider"></span></label>
+            </label>
+            <label class="toggle-label">
+              <span>Link Filter</span>
+              <label class="toggle"><input type="checkbox" id="link_filter" onchange="saveAutomod()"/><span class="slider"></span></label>
+            </label>
+            <label class="toggle-label">
+              <span>Caps Filter (70%+ caps)</span>
+              <label class="toggle"><input type="checkbox" id="caps_filter" onchange="saveAutomod()"/><span class="slider"></span></label>
+            </label>
+          </div>
+          <div class="form-group" style="margin-top:32px">
+            <h3>Word Filter</h3>
+            <div class="tag-list" id="wordList"></div>
+            <div class="add-form-row" style="margin-top:12px">
+              <input type="text" id="wordInput" class="dash-input" placeholder="Add a word..." maxlength="64" style="flex:1"/>
+              <button class="btn-add" onclick="addWord()">Add</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- CUSTOM COMMANDS -->
+        <section id="section-commands" class="dash-section">
+          <h2>Custom Commands</h2>
+          <p class="section-desc">Members trigger these with your prefix (e.g. <code id="prefixHint">!</code><code>trigger</code>).</p>
+          <div class="card-list" id="commandsList"></div>
+          <div class="add-form">
+            <h3>Add Command</h3>
+            <div class="form-group">
+              <label>Trigger (letters, numbers, _ - only)</label>
+              <input type="text" id="cmd_trigger" class="dash-input" placeholder="rules" maxlength="32"/>
+            </div>
+            <div class="form-group">
+              <label>Response</label>
+              <textarea id="cmd_response" class="dash-textarea" rows="3" placeholder="Our server rules: ..."></textarea>
+            </div>
+            <button class="btn-save" onclick="addCommand()">Add Command</button>
+          </div>
+        </section>
+
+        <!-- NOTIFICATIONS -->
+        <section id="section-notifications" class="dash-section">
+          <h2>Notifications</h2>
+          <p class="section-desc">Get alerts in a channel when Twitch streamers go live, YouTube channels post, or Reddit gets new posts.</p>
+          <div class="card-list" id="notificationsList"></div>
+          <div class="add-form">
+            <h3>Add Notification</h3>
+            <div class="add-form-row">
+              <div class="form-group" style="flex:0 0 150px">
+                <label>Type</label>
+                <select id="notif_type" class="dash-select">
+                  <option value="twitch">🟣 Twitch</option>
+                  <option value="youtube">🔴 YouTube</option>
+                  <option value="reddit">🟠 Reddit</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex:1">
+                <label id="notifTargetLabel">Username / Channel ID / Subreddit</label>
+                <input type="text" id="notif_target" class="dash-input" placeholder="e.g. ninja"/>
+              </div>
+              <div class="form-group" style="flex:1">
+                <label>Discord Channel</label>
+                <select id="notif_channel" class="dash-select"></select>
+              </div>
+            </div>
+            <button class="btn-save" onclick="addNotification()">Add Notification</button>
+          </div>
+        </section>
+
+      </div><!-- /sections -->
+    </main>
+  </div><!-- /guild-layout -->
+
+  <script src="/js/guild.js"></script>
+</body>
+</html>
